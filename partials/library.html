@@ -1,0 +1,32 @@
+<div class='container-fluid' id="content" >
+  <div id="userBadge">
+     <h3>{{user.username}}</h3>
+     <img ng-src="{{user.avatar_url}}" />
+     <h5>Favorites: {{user.public_favorites_count}}</h5>
+     <h5>Following: {{user.followings_count}}</h5>
+     <h5>Followers: {{user.followers_count}}</h5>
+  </div>
+  <div id="streamBar">
+      <h5 ng-show='currentTrack'>Current playing: <em>{{currentTrack}}</em> |</h5>
+      <!--<a target="_self" href="{{musicPlayer.streamInfo.url}}" download="{{currentTrack}}.mp3">Download</a>-->
+      <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+      <span ng-show="!soundOn" class="glyphicon glyphicon-play" ng-click="playTrack(playing, currentTrack)" aria-hidden="true"></span>
+      <span ng-show="soundOn" class="glyphicon glyphicon-pause" ng-click="playTrack(playing, currentTrack)" aria-hidden="true"></span>
+      <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
+      <input ng-model="volume" id="volume" type="range" value="60" max="100" min="0" step="20" ng-change="updateVol()" />
+      <span class="glyphicon glyphicon-volume-off" ng-show="volume==0" ng-click="volume=60; updateVol()" aria-hidden="true"></span>
+      <span class="glyphicon glyphicon-volume-up" ng-show="volume!=0" ng-click="volume=0; updateVol()" aria-hidden="true"></span>
+  </div>
+ <input id="search" ng-model="search" placeholder="Search..." type="text" class="form-control" />
+ <ul class="nav nav-pills">
+   <li ng-class="{active : sortParam === '+'}"><a ng-click="sortParam='+'">Most Recent</a></li>
+   <li ng-class="{active : sortParam === 'title'}" ng-click="sortParam='title'"><a val='title'>Title</a></li>
+   <li ng-class="{active : sortParam === 'user.username'}" ng-click="sortParam='user.username'"><a val='user.username'>Artist</a></li>
+   <li ng-class="{active : sortParam === '-favoritings_count'}" ng-click="sortParam = '-favoritings_count'"><a>Likes</a></li>
+ </ul>
+ <div class='list-group'>
+   <!--<img ng-show="!songs" ng-src='http://i.stack.imgur.com/fHctp.gif' />-->
+     <h4 ng-show="!songs">Loading from Soundcloud...</h4>
+      <song-card ng-repeat="song in songs | orderBy: sortParam | filter:search"></song-card>
+ </div>
+</div>

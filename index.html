@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>SINE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+
+
+    <!-- Will eventually change to Jade -->
+<body ng-app="sine" ng-controller="songList">
+  <div class="page-header" id="header">
+     <h1>SINE <small>Music Library</small></h1>
+     <p id='credits'>Made with <a href="https://github.com/matlin"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a> by Matthew Linkous</p>
+  </div>
+    <div ng-app="sine">
+        <div ng-view></div>
+    </div>
+    
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <!--<script src='http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js'></script>-->
+    <script src='https://code.angularjs.org/1.4.7/angular.js'></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
+    <script src="https://code.angularjs.org/1.4.7/angular-cookies.js"></script>
+    <script src="js/index.js"></script>
+    
+  </body>
+</html>
