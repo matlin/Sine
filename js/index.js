@@ -1,6 +1,6 @@
 SC.initialize({
   client_id: 'ddd8d3a316d38bb2e0853693e57781f6',
-    redirect_uri: 'http://localhost/sine/callback.html'
+    redirect_uri: 'http://sine.netlifly.com/callback.html'
 });
 
 var app = angular.module("sine", ['ngRoute', 'ngCookies']);
