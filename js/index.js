@@ -84,7 +84,7 @@ app.controller("Login", ['$scope', '$location', '$cookies', function($scope, $lo
     init();
 }]);
 
-app.controller("songList", ['$scope', 'favorites', 'scUser', '$routeParams', '$timeout', function($scope, favorites, scUser, $routeParams, $timeout){
+app.controller("songList", ['$scope', 'favorites', 'scUser', '$routeParams', '$timeout', '$filter', function($scope, favorites, scUser, $routeParams, $timeout, $filter){
    var scrollBox = $(window);
    var streamBarPos = $('#streamBar').offset();
     angular.element(document).ready(function(){
@@ -101,9 +101,23 @@ app.controller("songList", ['$scope', 'favorites', 'scUser', '$routeParams', '$t
    });
    
    $scope.randColor = function(){
-      artCovers = ['orange','red','blue','green','yellow'];
+      var artCovers = ['orange','red','blue','green','yellow'];
       var choice = Math.random() * (artCovers.length - 1);
       return artCovers[choice];
+   }
+   
+   $scope.sortSongs = function(){
+      //console.log($scope.sortParam);
+      if ($scope.sortParam == "hotness"){
+         console.log("Applying hotness filter");
+         $scope.orderedSongs = $filter('orderBy')($scope.songs, $scope.hotness, $scope.reverse);
+      }else{
+         $scope.orderedSongs = $filter('orderBy')($scope.songs, $scope.sortParam, $scope.reverse);
+      }
+   }
+   $scope.hotness = function(track){
+      var hotFactor = (track.favoritings_count / track.playback_count);
+      return hotFactor;
    }
    
    var userID = $routeParams.userID;
@@ -122,6 +136,19 @@ app.controller("songList", ['$scope', 'favorites', 'scUser', '$routeParams', '$t
          $scope.musicPlayer.setVolume(newVol);
       }
    }
+   $scope.updateTrackPos = function(){
+      if ($scope.musicPlayer){
+         //console.log($scope.trackPos);
+         var newPos = Math.floor(($scope.trackPos / 300) * $scope.currentTrack.duration);
+         console.log("New pos: " + newPos);
+         console.log("Diff: " + Math.abs(newPos - $scope.musicPlayer.currentTime()));
+         if (Math.abs(newPos - $scope.musicPlayer.currentTime()) > 100){
+            $scope.trackPos = newPos;
+            $scope.musicPlayer.seek(newPos);
+         }
+
+      }
+   }
   $scope.updateUser = function(id){
     console.log("Updating userID to: " + id);
     scUser.get(id).success(function(newUser){
@@ -138,7 +165,8 @@ app.controller("songList", ['$scope', 'favorites', 'scUser', '$routeParams', '$t
         getAllLikes(favorites.get(data.next_href));
       }else{
         $scope.songs = preLoadSongs;
-         console.log($scope.songs);
+         $scope.orderedSongs = preLoadSongs;
+         //console.log($scope.songs);
       }
     });
   }
@@ -147,25 +175,41 @@ app.controller("songList", ['$scope', 'favorites', 'scUser', '$routeParams', '$t
   if (likesURL && userID){
    getAllLikes(favorites.get(likesURL));
   }
+   $scope.reverse = false;
   $scope.soundOn = false;
   $scope.playing = "";
   $scope.musicPlayer = null;
    $scope.loading = false;
-  $scope.playTrack = function(id, title, next){     
-    if (id){
-       var link = '/tracks/' + id;
-       $scope.currentTrack = title;
+   $scope.next = "";
+   $scope.trackDuration = 0;
+   $scope.prev = "";
+   $scope.trackTime = 0;
+  $scope.playTrack = function(track, index){     
+     if (index != undefined){
+        //$scope.next = $scope.orderedSongs[index+1]
+        $scope.prev = (index-1 >= 0 ? $scope.orderedSongs[index - 1] : {});
+        $scope.next = (index+1 <= $scope.orderedSongs.length ? $scope.orderedSongs[index + 1] : {});
+        $scope.index = index;
+     }else{
+       //$scope.next = $scope.orderedSongs[$scope.index+1];
+        $scope.prev = ($scope.index-1 >= 0 ? $scope.orderedSongs[$scope.index - 1] : {});
+        $scope.next = ($scope.index+1 <= $scope.orderedSongs.length ? $scope.orderedSongs[$scope.index + 1] : {});
+     }
+     console.log($scope.index, $scope.next);
+    if (track.id){
+       var link = '/tracks/' + track.id;
+       $scope.currentTrack = track;
        $timeout(function(){
-         $scope.playing = id;
+         $scope.playing = track.id;
        },0);
-       if (id === $scope.playing && $scope.musicPlayer){
+       if (track.id === $scope.playing && $scope.musicPlayer){
            //console.log("Music Player", $scope.musicPlayer);
            if ($scope.soundOn == true){
-               console.log("Pausing: " + title);
+               console.log("Pausing: " + track.title);
                $scope.musicPlayer.pause();
                $scope.soundOn = false;
            }else{
-               console.log("Un-pausing: " + title);
+               console.log("Un-pausing: " + track.title);
                $scope.musicPlayer.play(); 
                $scope.soundOn = true;
            }
@@ -188,9 +232,17 @@ app.controller("songList", ['$scope', 'favorites', 'scUser', '$routeParams', '$t
                },0);
             });
             $scope.musicPlayer.on('finish', function(){
-               if (next){
-                  $scope.playTrack(next.id, next.title, {});
+               if ($scope.next){
+                  $scope.soundOn = false;
+                  $scope.playTrack($scope.next.id, $scope.next.title, $scope.index+1);
                }
+            });
+            $scope.musicPlayer.on('time', function(){
+               $timeout(function(){
+                  $scope.trackTime = new Date($scope.musicPlayer.currentTime());
+                  $scope.trackPos = Math.floor(300 * ($scope.musicPlayer.currentTime() / $scope.currentTrack.duration));
+                  //console.log($scope.trackPos);
+               },0);
             });
             $scope.musicPlayer.play();
          });
@@ -199,9 +251,29 @@ app.controller("songList", ['$scope', 'favorites', 'scUser', '$routeParams', '$t
   }
 }]);
 
-app.directive('songCard', function() {
+app.directive('songCard', ['$timeout', function($timeout) {
       return {
         restrict: 'E',
-         templateUrl: 'templates/song-card.html'
+         transclude: true,
+         templateUrl: 'templates/song-card.html',
+         link: function(scope, elem){
+            //adding random backgrounds
+            var artCovers = ['orange','red','blue','green','yellow'];
+            var choice = Math.floor(Math.random() * (artCovers.length - 1));
+            scope.coverColor = artCovers[choice];
+            //add functionality for next and previous tracks to scope
+            scope.$watch('orderedSongs', function(oldVal, newVal){
+               //console.log("List reordered");
+               if (scope.orderedSongs[scope.$index].id == scope.playing){
+                  console.log(scope.$index);
+                  //scope.next = scope.orderedSongs[scope.$index+1];
+                  $timeout(function(){
+                     scope.$parent.prev = (scope.$index-1 >= 0 ? scope.orderedSongs[scope.$index - 1] : scope.orderedSongs[0]);
+                     scope.$parent.next = (scope.$index+1 <= scope.orderedSongs.length ? scope.orderedSongs[scope.$index + 1] : scope.orderedSongs[0]);
+                     console.log("Next",scope.$parent.next);
+                  },0);
+               }
+            });
+         }
       }
-});
+}]);

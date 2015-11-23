@@ -1,13 +1,13 @@
 <div class='list-group-item songCard row'>
         <div class='col-sm-10 col-mid-10 col-lg-11'>
-           <img class='artwork' style="background-color:{{randColor()}}" ng-src="{{song.artwork_url}}" />
+           <img class='artwork' ng-style="{'background-color':coverColor}" ng-src="{{song.artwork_url}}" />
            <span class='title'>{{ song.title }}</span>
            <br />
            <span class='artists'>{{ song.user.username }}</span>
         </div>
      <div class='songOptions col-sm-2 col-mid-2 col-lg-1' >
          <button ng-show="loading == true && playing == song.id" class="btn btn-primary btn-lg">Loading</button>
-         <button play-button ng-show="loading == false && playing == song.id && soundOn" ng-click="playTrack(song.id, song.title)" class="play btn btn-primary btn-lg">PAUSE</button>
-         <button play-button ng-show="playing != song.id || (!loading && !soundOn && playing == song.id)" ng-click="playTrack(song.id, song.title, songs[$index+1])" class="play btn btn-primary btn-lg">PLAY</button>
+         <button play-button ng-show="loading == false && playing == song.id && soundOn" ng-click="playTrack(song, $index)" class="play btn btn-primary btn-lg">PAUSE</button>
+         <button play-button ng-show="playing != song.id || (!loading && !soundOn && playing == song.id)" ng-click="playTrack(song, $index)" class="play btn btn-primary btn-lg">PLAY</button>
      </div>
 </div>
