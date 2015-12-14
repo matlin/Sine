@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>SINE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+    <meta name="fragment" content="!">
+     <meta name="description" content="Sine music library is a tool for users that use Soundcloud primarily for listening to better control their favorites by using powerful search and exploring tools.">
+    <!--<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>-->
     <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
     <link rel="stylesheet" href="css/normalize.css">
     <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
@@ -15,18 +17,20 @@
     <!-- Will eventually change to Jade -->
 <body ng-app="sine" ng-controller="songList">
   <div class="page-header" id="header">
-     <h1>SINE <small>Music Library</small></h1>
+     <a href="/sine/"><h1>SINE <small>Music Library (Beta)</small></h1></a><img src="https://developers.soundcloud.com/assets/powered_by_white-371bd6967352fcc89673d4c81f7e5661.png" />
      <p id='credits'>Made with <a href="https://github.com/matlin"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a> by Matthew Linkous</p>
   </div>
     <div ng-app="sine">
         <div ng-view></div>
     </div>
-    
+    <script src="js/sc-sdk.js"></script>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <!--<script src='http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js'></script>-->
+   <script src="js/typeahead.bundle.js"></script>
     <script src='https://code.angularjs.org/1.4.7/angular.js'></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
     <script src="https://code.angularjs.org/1.4.7/angular-cookies.js"></script>
+    <!--<script src="js/ui-bootstrap-custom-build/ui-bootstrap-custom-0.14.3.js"></script>-->
     <script src="js/index.js"></script>
       
     <script>
