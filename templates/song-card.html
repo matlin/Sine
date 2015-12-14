@@ -3,7 +3,7 @@
            <img class='artwork' ng-style="{'background-color':coverColor}" ng-src="{{song.artwork_url}}" />
            <span ng-bind-html="song.title | highlight:search" class='title'>{{ song.title | highlight:search }}</span>
            <br />
-   <a ng-href="/user/{{song.user.id}}"><span ng-bind-html="song.user.username | highlight:search" class='artists'>{{ song.user.username | highlight:search }}</span></a>
+   <a ng-href="/#/user/{{song.user.id}}"><span ng-bind-html="song.user.username | highlight:search" class='artists'>{{ song.user.username | highlight:search }}</span></a>
            <br />
             <span class="glyphicon glyphicon-headphones"></span> {{song.playback_count | number}} <br />
             <span class="glyphicon glyphicon-thumbs-up"></span> {{song.favoritings_count | number}} <br />
