@@ -3,7 +3,7 @@ SC.initialize({
     redirect_uri: 'http://www.sinelib.com/callback.html'
 });
 
-var app = angular.module("sine", ['ngRoute', 'ngCookies', 'ui.bootstrap']);
+var app = angular.module("sine", ['ngRoute', 'ngCookies']);
 
 app.config(['$routeProvider',
   function($routeProvider) {
