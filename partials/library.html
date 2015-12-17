@@ -3,9 +3,9 @@
   <div id="userBadge">
      <h3>{{user.username}}</h3>
      <img ng-src="{{user.avatar_url}}" />
-     <h5>Favorites: {{user.public_favorites_count}}</h5>
-     <h5>Following: {{user.followings_count}}</h5>
-     <h5>Followers: {{user.followers_count}}</h5>
+     <h5>Favorites: {{user.public_favorites_count | number}}</h5>
+     <h5>Following: {{user.followings_count | number}}</h5>
+     <h5>Followers: {{user.followers_count | number}}</h5>
   </div>
   <div id="streamBar">
      <h5 ng-show='currentTrack' id="nowPlaying">Current playing: <em>{{currentTrack.title | limitTo : 50}}{{currentTrack.title.length > 50 ? '...' : ''}}</em></h5>
