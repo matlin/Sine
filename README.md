@@ -1,4 +1,12 @@
-# Sine
-A ground-up redesign of Soundcloud catered to heavy listeners rather than uploaders. Sine brings sorting and fast searching to all lists of music from tracks and favorites to playlists and followers.
+# sine
 
-Currently this repo is missing comments and solid organization. A large update in December will come with all the important open source necessecities. 
+This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
+version 0.15.1.
+
+## Build & development
+
+Run `grunt` for building and `grunt serve` for preview.
+
+## Testing
+
+Running `grunt test` will run the unit tests with karma.
