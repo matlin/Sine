@@ -13,6 +13,9 @@ SC.initialize({
     redirect_uri: 'http://www.sinelib.com/callback.html'
 });
 
+Parse.initialize("CfpgiSfkCaG8QqoL7A0OtIkoOFXnnWu0SKzYPUYb", "lRCjgPzcfL8mNIbPZS56wXmc2W8Hdw4lmCF6uACg");
+
+
 angular
   .module('sineApp', [
     'ngAnimate',

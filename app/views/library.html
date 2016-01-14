@@ -24,12 +24,16 @@
   </div>
    <div ng-show="displayQueue" id="queueWindow">
       <h3>Queue</h3>
-      <table>
+      <!--<table>
          <thead>
          <tr><th>Title</th><th>Artist</th></tr>
          </thead>
          <tr ng-class="$odd ? 'oddRow' : ''" ng-repeat="song in queue"><td>{{song.title}}</td><td>{{song.user.username}}</td></tr>
-      </table>
+      </table>-->
+      <div ng-repeat="song in queue">
+         <div>{{song.title}}</div>
+         <div>{{song.user.username}}</div>
+      </div>
    </div>
    <!--<select id="listSelect" ng-init="categories=['Favorites', 'Tracks', 'Playlists', 'Reposts']" ng-options="category by category in categories"  ng-model="listSelect"  selected="Favorites">
       <option ng-repeat="category in categories" >{{category}}</option>
