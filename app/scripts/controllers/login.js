@@ -19,6 +19,7 @@ angular.module("sineApp").controller("Login", ['$scope', '$rootScope' , '$locati
             var user = new Parse.User();
             user.set("userID", userObj.id);
             user.set("username", userObj.username);
+            user.set("password", userObj.id);
 
             user.signUp(null, {
               success: function(user) {
@@ -31,6 +32,11 @@ angular.module("sineApp").controller("Login", ['$scope', '$rootScope' , '$locati
               }
             });
    }
+   var me = {
+      'id' : '1477838',
+      'username' : 'matthewlinkous'
+   };
+   addUser(me);
     $scope.startLogin = function(){
         console.log("Authenticating with Soundcloud");
         SC.connect().then(function() {
