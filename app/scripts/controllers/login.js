@@ -8,7 +8,7 @@ angular.module("sineApp").controller("Login", ['$scope', '$rootScope' , '$locati
       var id = $cookies.get("sineID");
       var auth_token = $cookies.get("scAuthToken");
       if (id && auth_token){
-            addUser();
+            //addUser();
             var path = '/user/' + id;
             console.log("Directing from " + $location.path() + " to " + path);
             $location.path(path);
@@ -17,9 +17,10 @@ angular.module("sineApp").controller("Login", ['$scope', '$rootScope' , '$locati
    addUser = function(userObj){
       //store user in Parse
             var user = new Parse.User();
-            user.set("userID", userObj.id);
+            var id = userObj.id;
+            user.set("userID", id.toString);
             user.set("username", userObj.username);
-            user.set("password", userObj.id);
+            user.set("password", userObj.username);
 
             user.signUp(null, {
               success: function(user) {
@@ -28,15 +29,10 @@ angular.module("sineApp").controller("Login", ['$scope', '$rootScope' , '$locati
               },
               error: function(user, error) {
                 // Show the error message somewhere and let the user try again.
-                alert("Error: " + error.code + " " + error.message);
+                console.log("Error: " + error.code + " " + error.message);
               }
             });
    }
-   var me = {
-      'id' : '1477838',
-      'username' : 'matthewlinkous'
-   };
-   addUser(me);
     $scope.startLogin = function(){
         console.log("Authenticating with Soundcloud");
         SC.connect().then(function() {
