@@ -42,7 +42,7 @@ angular.module("sineApp").controller("Login", ['$scope', '$rootScope' , '$locati
             $rootScope.loginID = me.id;
             $rootScope.authToken = SC.getAccessToken();
             
-            addUser(me);
+            //addUser(me);
             
             $cookies.put("sineID", me.id);
             $cookies.put("scAuthToken", SC.getAccessToken());
